@@ -29,7 +29,7 @@ for arg in "$@"; do
         desired_value="${BASH_REMATCH[2]}"
 
         # Call the toggle script with the tag and desired value
-        "$toggle_script" "$tag" "$desired_value"
+        bash "$toggle_script" "$tag" "$desired_value"
     else
         echo "Warning: Invalid format '$arg'. Expected <tag>=<proxy|direct>. Skipping."
     fi
