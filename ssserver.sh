@@ -130,7 +130,7 @@ Description=Shadowsocks Server
 After=network.target
 
 [Service]
-ExecStart=/opt/ss-rust/ssserver --server-addr 0.0.0.0:$port --encrypt-method $encryption_method --password $password
+ExecStart=/opt/ss-rust/ssserver -U --server-addr 0.0.0.0:$port --encrypt-method $encryption_method --password \"$password\"
 WorkingDirectory=/opt/ss-rust
 Restart=always
 User=nobody
