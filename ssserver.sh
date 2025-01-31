@@ -20,15 +20,15 @@ get_latest_version() {
 # Function to detect the package manager and install missing packages
 install_packages() {
   if command -v apt-get &> /dev/null; then
-    apt-get update && apt-get install -y curl jq tar openssl
+    apt-get update && apt-get install -y curl jq tar openssl xz-utils
   elif command -v pacman &> /dev/null; then
-    pacman -Syu --noconfirm curl jq tar openssl
+    pacman -Syu --noconfirm curl jq tar openssl xz
   elif command -v dnf &> /dev/null; then
-    dnf install -y curl jq tar openssl
+    dnf install -y curl jq tar openssl xz
   elif command -v zypper &> /dev/null; then
-    zypper install -y curl jq tar openssl
+    zypper install -y curl jq tar openssl xz
   elif command -v yum &> /dev/null; then
-    yum install -y curl jq tar openssl
+    yum install -y curl jq tar openssl xz
   else
     echo "Unsupported package manager. Please install curl, jq, tar, and openssl manually."
     exit 1
@@ -36,7 +36,7 @@ install_packages() {
 }
 
 # Check if required tools are installed, if not install them
-for tool in curl jq tar openssl; do
+for tool in curl jq tar openssl xz; do
   if ! command -v "$tool" &> /dev/null; then
     echo "$tool not found. Installing..."
     install_packages
