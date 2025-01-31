@@ -20,15 +20,15 @@ get_latest_version() {
 # Function to detect the package manager and install missing packages
 install_packages() {
   if command -v apt-get &> /dev/null; then
-    apt-get update && apt-get install -y curl jq tar openssl xz-utils
+    apt-get update && apt-get install -y curl jq tar openssl xz-utils ntp
   elif command -v pacman &> /dev/null; then
-    pacman -Syu --noconfirm curl jq tar openssl xz
+    pacman -Syu --noconfirm curl jq tar openssl xz ntp
   elif command -v dnf &> /dev/null; then
-    dnf install -y curl jq tar openssl xz
+    dnf install -y curl jq tar openssl xz ntp
   elif command -v zypper &> /dev/null; then
-    zypper install -y curl jq tar openssl xz
+    zypper install -y curl jq tar openssl xz ntp
   elif command -v yum &> /dev/null; then
-    yum install -y curl jq tar openssl xz
+    yum install -y curl jq tar openssl xz ntp
   else
     echo "Unsupported package manager. Please install curl, jq, tar, and openssl manually."
     exit 1
@@ -36,7 +36,7 @@ install_packages() {
 }
 
 # Check if required tools are installed, if not install them
-for tool in curl jq tar openssl xz; do
+for tool in curl jq tar openssl xz ntpd; do
   if ! command -v "$tool" &> /dev/null; then
     echo "$tool not found. Installing..."
     install_packages
@@ -50,6 +50,9 @@ if [ -z "$1" ]; then
 else
   version="$1"
 fi
+
+# Sync system time
+ntpd -gd > /dev/null 2>&1
 
 # Detect CPU architecture
 cpu_arch=$(uname -m)
